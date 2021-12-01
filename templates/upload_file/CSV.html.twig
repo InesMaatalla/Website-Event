@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Intégration de participants avec un fichier CSV</h1>
+    <div class="col-sm-4"  >
+        {{ form_start(formCSV) }}
+
+        {{ form_widget(formCSV) }}
+
+        <button class="btn btn-outline-secondary" >Ajouter</button>
+        {{ form_end(formCSV) }}
+    </div>
+
+
+{% endblock %}

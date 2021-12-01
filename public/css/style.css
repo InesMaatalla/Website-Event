@@ -1,0 +1,86 @@
+.searchInput {
+    background-color: #ea39b8;
+    border-right-width: 0;
+    color: #ffeeda;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 36px;
+    border: none;
+    border-radius: 2px;
+}
+
+.searchContent {
+    display: flex;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.searchButton {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.newInput {
+    background-color: #ea39b8;
+    /*border-color: #44d9e8;*/
+    border: none;
+    color: #ffeeda;
+    height:50px;
+    border-radius: 2px;
+
+
+}
+
+.table-campus tr:nth-of-type(even) {
+    background-color: #ea39b8;
+    --bs-table-bg: #ea39b8;
+}
+
+.table-campus tr:nth-of-type(odd) {
+    background-color: #6f42c1;
+    --bs-table-bg: #6f42c1;
+}
+
+.table-campus thead .table-head {
+    background-color: #44d9e8;
+    --bs-table-bg: #44d9e8;
+}
+
+/*CSS pour affichage tableau scrollé en page d'accueil*/
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+    bottom: .5em;
+}
+
+.dataTables_scrollBody::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+    border-radius: 10px;
+}
+
+.dataTables_scrollBody::-webkit-scrollbar {
+    width: 6px;
+    background-color: white;
+}
+
+.dataTables_scrollBody::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-image: -webkit-gradient(linear, left bottom, left top, from(#30cfd0), to(#330867));
+    background-image: -webkit-linear-gradient(bottom, #30cfd0 0%, #330867 100%);
+    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+
+}

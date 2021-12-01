@@ -1,0 +1,42 @@
+{% extends "admin/campus.html.twig" %}
+
+{% block body %}
+    <h1 style="text-align: center">Gérer les campus</h1>
+    <br>
+    <br>
+    <h4 class="container row-justify-content-center col-sm-8"><strong>Filtrer les sites</strong></h4>
+
+    <div class="container row-justify-content-center col-sm-8">
+        {{ form_start(form) }}
+
+            <table id="dtDynamicVerticalScrollExample" class="table table-campus table-bordered table-sm">
+                <thead>
+                <tr class="table-light table-head text-center">
+                    <th scope="col">Campus</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for campus in camps %}
+                    <tr class="table-secondary text-center">
+                        {% if campus.id is same as(id) %}
+                            <td>{{ form_widget(form.nom) }}</td>
+                            <td><input type="submit" value="Valider" class="btn btn-outline-secondary"></td>
+                        {% else %}
+                            <td>{{ campus.nom }}</td>
+                            <td>
+                                <a href="{{ url('campus_edit', { id : campus.id}) }}">Modifier</a>
+                                -
+                                <a href="{{ url('campus_remove', { id : campus.id}) }}">Supprimer</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock body %}
+

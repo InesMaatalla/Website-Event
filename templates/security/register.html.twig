@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'inscrire{% endblock %}
+
+{% block body %}
+    <h1>S'inscrire</h1>
+
+    {% form_theme registrationForm 'bootstrap_4_horizontal_layout.html.twig' %}
+
+    {{ form_start(registrationForm) }}
+
+    {{ form_row(registrationForm.pseudo, {'attr': {'class': 'mb-3'}}) }}
+    {{ form_row(registrationForm.prenom, {'attr': {'class': 'mb-3'}}) }}
+    {{ form_row(registrationForm.nom, {'attr': {'class': 'mb-3'}}) }}
+    {{ form_row(registrationForm.email, {'attr': {'class': 'mb-3'}}) }}
+    {{ form_row(registrationForm.telephone, {'attr': {'class': 'mb-3'}}) }}
+    {{ form_row(registrationForm.plainPassword.first, {'attr': {'class': 'mb-3'}}) }}
+    {{ form_row(registrationForm.plainPassword.second, {'attr': {'class': 'mb-3'}}) }}
+    {{ form_row(registrationForm.campus, {'attr': {'class': 'mb-3'}}) }}
+    {{ form_row(registrationForm.imageFilename, {'attr': {'class': 'mb-3'}}) }}
+    {{ form_row(registrationForm.cgu, {'attr': {'class': 'mb-3'}}) }}
+
+    {{ form_row(registrationForm.submit) }}
+
+    {{ form_end(registrationForm) }}
+
+{% endblock body %}

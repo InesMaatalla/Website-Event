@@ -1,0 +1,244 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier une sortie{% endblock %}
+{% block body %}
+    {{ parent() }}
+
+    <h1>Modifier</h1>
+
+    {% form_theme formSortie 'bootstrap_4_horizontal_layout.html.twig' %}
+    {% form_theme formLieu 'bootstrap_4_horizontal_layout.html.twig' %}
+    {{ form_start(formSortie) }}
+    <div class="container">
+        <div class="row g-3 ">
+            <div class="col-md-6 ">
+                <div class="mb-3">
+                    {{ form_label(formSortie.nom) }}
+                    {{ form_widget(formSortie.nom) }}
+                    {#                {{ form_errors(formSortie.nom) }}#}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formSortie.dateHeureDebut ) }}
+                    {{ form_widget(formSortie.dateHeureDebut) }}
+                    {#                {{ form_errors(formSortie.dateHeureDebut) }}#}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formSortie.duree) }}
+                    {{ form_widget(formSortie.duree) }}
+                    {#                {{ form_errors(formSortie.duree) }}#}
+                </div>
+                <div class="mb-3">
+                    {{ form_label (formSortie.dateLimiteInscription) }}
+                    {{ form_widget(formSortie.dateLimiteInscription) }}
+                    {#                {{ form_errors(formSortie.dateLimiteInscription) }}#}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formSortie.nbInscriptionsMax) }}
+                    {{ form_widget(formSortie.nbInscriptionsMax) }}
+                    {#                {{ form_errors(formSortie.nbInscriptionsMax) }}#}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formSortie.infosSortie) }}
+                    {{ form_widget(formSortie.infosSortie) }}
+                    {#                {{ form_errors(formSortie.infosSortie) }}#}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    {{ form_label(formSortie.campus) }}
+                    {{ form_widget(formSortie.campus) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formSortie.ville) }}
+                    {{ form_widget(formSortie.ville) }}
+                </div>
+                <div class="row">
+                <div class="col-sm-10 mb-3">
+                    {{ form_label(formSortie.lieu) }}
+                    {{ form_widget(formSortie.lieu) }}
+                </div>
+                <div class="col-sm-2 mt-auto mb-3">
+              <a href="#modalLieu" id="btnAddLieu" data-toggle="modal" data-href="{{ url('lieu_create') }}"
+              class="btn btn-outline-secondary">Ajouter</a>
+              </div>
+              </div>
+                <div class="mb-3">
+                    {{ form_label(formSortie.rue) }}
+                    {{ form_widget(formSortie.rue) }}
+                    {#                {{ form_errors(formSortie.rue) }}#}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formSortie.code_postal) }}
+                    {{ form_widget(formSortie.code_postal) }}
+                    {#                {{ form_errors(formSortie.code_postal) }}#}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formSortie.latitude) }}
+                    {{ form_widget(formSortie.latitude) }}
+                    {#                {{ form_errors(formSortie.latitude) }}#}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(formSortie.longitude) }}
+                    {{ form_widget(formSortie.longitude) }}
+                    {#                {{ form_errors(formSortie.longitude) }}#}
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="text" hidden value="{{ lieu2.id }}" id="idLieuAffiche">
+    <input type="text" hidden value="{{ lieu2.rue }}" id="rueLieuAffiche">
+    <input type="text" hidden value="{{ lieu2.longitude }}" id="longLieuAffiche">
+    <input type="text" hidden value="{{ lieu2.latitude }}" id="latLieuAffiche">
+    <input type="text" hidden value="{{ lieu2.ville.id}}" id="idville">
+    <input type="text" hidden value="{{ lieu2.ville.codePostal }}" id="villecp">
+
+    <div class="container">
+        <div class="row ">
+            <div class="gap-2 d-md-flex justify-content-md-start flex flex-nowrap ">
+                {{ form_row(formSortie.enregistrer) }}
+
+                {{ form_row(formSortie.publier) }}
+
+                <a href="{{ url('sortie_cancel', {"id": sortie.id}) }}" class = 'btn btn-outline-secondary '>
+                    Annuler
+                </a>
+
+                <a href="{{ url('default_home') }}" class = 'btn btn-outline-secondary '>
+                    Retour
+                </a>
+            </div>
+        </div>
+    </div>
+    {{ form_end(formSortie) }}
+
+    <!-- Modal HTML -->
+    <div id="modalLieu" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajout d'un nouveau lieu</h5>
+            </div>
+            <div class="modal-body align-content-center">
+                {{ form_start(formLieu) }}
+                <div class="row g-3 justify-content-center">
+                    <div class="col-md-12 ">
+                        <div class="mb-3">
+                            {{ form_label(formLieu.nom) }}
+                            {{ form_widget(formLieu.nom) }}
+
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formLieu.rue) }}
+                            {{ form_widget(formLieu.rue) }}
+
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formLieu.latitude) }}
+                            {{ form_widget(formLieu.latitude) }}
+
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formLieu.longitude) }}
+                            {{ form_widget(formLieu.longitude) }}
+
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formLieu.ville) }}
+                            {{ form_widget(formLieu.ville) }}
+
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                    {{ form_row(formLieu.submit) }}
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+
+
+
+                    </div>
+                    {{ form_end(formLieu) }}
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript" rel="script">
+
+            $(document).ready(function () {
+                let $villeaffichee = $('#idville');
+                let $lieuaffichee = $('#idLieuAffiche');
+                let $cpChoisi = $('#villecp');
+                let $rue = $('#rueLieuAffiche');
+                let $long = $('#longLieuAffiche');
+                let $lat = $('#latLieuAffiche');
+
+                $('#sortie_form_ville').val($villeaffichee.val());
+                $('#sortie_form_lieu').val($lieuaffichee.val());
+                $('#sortie_form_code_postal').val($cpChoisi.val());
+                $('#sortie_form_rue').val($rue.val());
+                $('#sortie_form_longitude').val($long.val());
+                $('#sortie_form_latitude').val($lat.val());
+
+
+                var $ville = $('#sortie_form_ville');
+                console.log($ville)
+                $ville.change(function () {
+                    $.ajax({
+                        url: "{{ path('sortie_liste_lieux') }}",
+                        method: "GET",
+                        dataType: "JSON",
+                        data: {
+                            "idVille": $ville.val(),
+                        }
+                    })
+                        .done(function (tablieux) {
+                            var lieuchoisie = $('#sortie_form_lieu');
+                            lieuchoisie.html('');
+                            lieuchoisie.append('<option value> Choisissez un lieu </option>');
+                            $.each(tablieux, function (key, lieu) {
+                                lieuchoisie.append('<option value="' + lieu.id + '">' + lieu.nom + '</option>');
+                                var cpchoisi = $('#sortie_form_code_postal');
+                                cpchoisi.html('');
+                                cpchoisi.val(lieu.cp);
+                            });
+
+                        })
+                        .fail(() => {
+                            alert("Une erreur s'est produite en chargeant les données")
+                        })
+                });
+
+                var $lieu = $('#sortie_form_lieu');
+                $lieu.change(function () {
+                    $.ajax({
+                        url: "{{ path('sortie_lieu_details') }}",
+                        type: "GET",
+                        dataType: "JSON",
+                        data: {
+                            "lieuId": $lieu.val()
+                        }
+                    })
+                        .done(function (tabreponse) {
+                            $.each(tabreponse, function (key, valeur) {
+                                var rueAffichee = $('#sortie_form_rue');
+                                rueAffichee.html('');
+                                rueAffichee.val(valeur.Rue);
+                                var latitudeAffichee = $('#sortie_form_latitude');
+                                latitudeAffichee.html('');
+                                latitudeAffichee.val(valeur.xlatitude);
+                                var longitudeAffichee = $('#sortie_form_longitude');
+                                longitudeAffichee.html('');
+                                longitudeAffichee.val(valeur.xlongitude);
+                            });
+                        })
+                        .fail(function () {
+                            alert("Une erreur s'est produite en chargeant les lieux");
+                        })
+                });
+
+});
+            </script>
+        {% endblock javascripts %}

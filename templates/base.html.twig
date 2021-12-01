@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sortir.com{% endblock title %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="icon" href="{{ asset('img/favicon.png') }}">
+    <script type="application/javascript" src="{{ asset('js/jquery-3.6.0.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('js/scroll.js') }}"></script>
+    <script src="https://kit.fontawesome.com/e8ad64cba3.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
+</head>
+<body class="w-auto p-3" style="height: 1000px">
+<div class="container-lg">
+    <header>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+
+                <a class="navbar-brand" href="{{ url('default_home') }}" title="Sortir.com | Home">
+                    <img src="{{ asset('img/logo5.png') }}" alt="Sortir.com" width="40" height="34"
+                         class="d-inline-block align-text-top">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+                        aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                    <ul class="navbar-nav me-auto">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item">
+                                <a class="nav-link active" href="{{ url('ville_list') }}" title="Sortir.com | Home">Villes</a>
+                                <span class="visually-hidden">(current)</span>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url("campus_list") }}" title="Sortir.com | Home">Campus</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('default_home') }}" title="Sortir.com | Home">Accueil</a>
+
+                        </li>
+                        {% if app.user %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('monProfil') }}" title="Sortir.com | Home">Mon
+                                    profil</a>
+                            </li>
+                        {% else %}
+                            <li><a class="nav-link" href="{{ url('app_register') }}"></a></li>
+                        {% endif %}
+
+                        {% if not app.user %}
+                            <li><a class="nav-link" href="{{ url('app_register') }}" title="Register">S'inscrire</a>
+                            </li>
+                            <li><a class="nav-link" href="{{ url('app_login') }}" title="Login">Se connecter</a></li>
+                        {% else %}
+                            <li><a class="nav-link" href="{{ url('app_logout') }}" title="Logout">Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <footer class="d-flex flex-wrap justify-content- align-items-center  mb-sm-3 fixed-bottom  ">
+        <div class="container-xxl">
+            <div class="col-md-7 d-flex align-items-center">
+
+                <a class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1" href=""></a>
+                <span class="text-muted col-10">© {{ "now"|date("Y") }} sortir.com</span>
+
+
+                <ul class="nav col-md-10 justify-content-end list-unstyled d-flex">
+                    <li class="ms-3">
+                                    <span style="font-size: 20px; color: #32fbe2;">
+                                        <i class="fab fa-twitter"></i>
+                                    </span>
+                    </li>
+
+                    <li class="ms-3">
+                                    <span style="font-size: 20px; color: #32fbe2;">
+                                        <i class="fab fa-instagram"></i>
+                                    </span>
+                    </li>
+
+                    <li class="ms-3">
+                                    <span style="font-size: 20px; color: #32fbe2;">
+                                        <i class="fab fa-github"></i>
+                                    </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <br>
+    <main>
+        {# {% for message in app.flashes('success') %} #}
+        {% for group, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ group }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% block body %}
+
+        {% endblock body %}
+
+
+    </main>
+
+
+    {% block javascripts %}{% endblock javascripts %}
+</div>
+
+</body>
+
+</html>

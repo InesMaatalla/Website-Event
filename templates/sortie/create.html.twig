@@ -1,0 +1,290 @@
+{% extends 'base.html.twig' %}
+{% block title %}Création d'une sortie{% endblock %}
+{% block body %}
+    {{ parent() }}
+
+<h1>Créer une sortie</h1>
+
+{% form_theme formSortie 'bootstrap_4_horizontal_layout.html.twig' %}
+    {% form_theme formLieu 'bootstrap_4_horizontal_layout.html.twig' %}
+    {{ form_start(formSortie) }}
+<div class="container">
+    <div class="row g-3 ">
+        <div class="col-md-6 ">
+            <div class="mb-3">
+                {{ form_label(formSortie.nom) }}
+                {{ form_widget(formSortie.nom) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(formSortie.dateHeureDebut ) }}
+                {{ form_widget(formSortie.dateHeureDebut) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(formSortie.duree) }}
+                {{ form_widget(formSortie.duree) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label (formSortie.dateLimiteInscription) }}
+                {{ form_widget(formSortie.dateLimiteInscription) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(formSortie.nbInscriptionsMax) }}
+                {{ form_widget(formSortie.nbInscriptionsMax) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(formSortie.infosSortie) }}
+                {{ form_widget(formSortie.infosSortie) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(formSortie.campus) }}
+                {{ form_widget(formSortie.campus) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(formSortie.ville) }}
+                {{ form_widget(formSortie.ville) }}
+            </div>
+            <div class="row">
+            <div class="col-sm-10 mb-3">
+                {{ form_label(formSortie.lieu) }}
+                {{ form_widget(formSortie.lieu) }}
+            </div>
+{#            Bouton d'ajout du lieu #}
+            <div class="col-sm-2 mt-auto mb-3">
+              <a href="#modalLieu" id="btnAddLieu" data-toggle="modal"
+              data-href="{{ url('lieu_create') }}"
+              class="btn btn-outline-secondary">Ajouter</a>
+            </div>
+</div>
+            <div class="mb-3">
+                {{ form_label(formSortie.rue) }}
+                {{ form_widget(formSortie.rue) }}
+
+            </div>
+            <div class="mb-3">
+                {{ form_label(formSortie.code_postal) }}
+                {{ form_widget(formSortie.code_postal) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(formSortie.latitude) }}
+                {{ form_widget(formSortie.latitude) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(formSortie.longitude) }}
+                {{ form_widget(formSortie.longitude) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <div class="gap-2 d-md-flex justify-content-md-start">
+        <div class="  mb-3">
+           {{ form_row(formSortie.enregistrer) }}
+        </div>
+        <div class=" mb-3">
+            {{ form_row(formSortie.publier) }}
+        </div>
+       <div class="mb-3">
+            <a href="{{ url('default_home') }}"  class="btn btn-outline-secondary">
+                Annuler
+            </a>
+       </div>
+    </div>
+
+{{ form_end(formSortie) }}
+{% if lieu2 is defined %}
+<input type="text" id="test" value="1" hidden>
+    <input type="text" hidden value="{{ lieu2.id }}" id="idLieuAffiche">
+    <input type="text" hidden value="{{ lieu2.rue }}" id="rueLieuAffiche">
+    <input type="text" hidden value="{{ lieu2.longitude }}" id="longLieuAffiche">
+    <input type="text" hidden value="{{ lieu2.latitude }}" id="latLieuAffiche">
+    <input type="text" hidden value="{{ lieu2.ville.id }}" id="idville">
+    <input type="text" hidden value="{{ lieu2.ville.codePostal }}" id="villecp">
+{% else %}
+<input type="text" id="test" value="0" hidden>
+{% endif %}
+
+<!-- Modal HTML -->
+<div id="modalLieu" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajout d'un nouveau lieu</h5>
+            </div>
+            <div class="modal-body align-content-center">
+                {{ form_start(formLieu) }}
+                <div class="row g-3 justify-content-center">
+                    <div class="col-md-12 ">
+                        <div class="mb-3">
+                            {{ form_label(formLieu.nom) }}
+                            {{ form_widget(formLieu.nom) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formLieu.rue) }}
+                            {{ form_widget(formLieu.rue) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formLieu.latitude) }}
+                            {{ form_widget(formLieu.latitude) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formLieu.longitude) }}
+                            {{ form_widget(formLieu.longitude) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(formLieu.ville) }}
+                            {{ form_widget(formLieu.ville) }}
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                     {{ form_row(formLieu.submit) }}
+                        <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Annuler</button>
+                    </div>
+                    {{ form_end(formLieu) }}
+                </div>
+            </div>
+        </div>
+
+        {% endblock %}
+
+    {% block javascripts %}
+    <script type="text/javascript">
+            $(document).ready(function () {
+                //Récupération des lieux en fonction des villes
+                let ville = $('#sortie_form_ville');
+                console.log(ville)
+                ville.change(function () {
+                    $.ajax({
+                        url: "{{ path('sortie_liste_lieux') }}",
+                        method: "GET",
+                        dataType: "JSON",
+                        data: {
+                            "idVille": ville.val(),
+                        }
+                    })
+                        .done(function (tablieux) {
+                            //Récupération du select lieu
+                            let lieuchoisie = $('#sortie_form_lieu');
+                            lieuchoisie.html('');
+                            lieuchoisie.append('<option value> Choisissez un lieu </option>');
+
+                            //Ajout de chaque lieu renvoyé dans la balise select du lieu
+                            $.each(tablieux, function (key, lieu) {
+                                lieuchoisie.append('' +
+                                 '<option value="'
+                                + lieu.id
+                                + '">' + lieu.nom
+                                + '</option>'
+                                );
+                                var cpchoisi = $('#sortie_form_code_postal');
+                                cpchoisi.html('');
+                                cpchoisi.val(lieu.cp);
+                            });
+
+                        })
+                        .fail(() => {
+                            alert("Une erreur s'est produite en chargeant les données")
+                        })
+                });
+                //Affichage des champs du lieu choisi
+                let $lieu = $('#sortie_form_lieu');
+                $lieu.change(function () {
+                    $.ajax({
+                        url: "{{ path('sortie_lieu_details') }}",
+                        type: "GET",
+                        dataType: "JSON",
+                        data: {
+                            "lieuId": $lieu.val()
+                        }
+                    })
+                        .done(function (tabreponse) {
+                            $.each(tabreponse, function (key, valeur) {
+                                var rueAffichee = $('#sortie_form_rue');
+                                rueAffichee.html('');
+                                rueAffichee.val(valeur.Rue);
+                                var latitudeAffichee = $('#sortie_form_latitude');
+                                latitudeAffichee.html('');
+                                latitudeAffichee.val(valeur.xlatitude);
+                                var longitudeAffichee = $('#sortie_form_longitude');
+                                longitudeAffichee.html('');
+                                longitudeAffichee.val(valeur.xlongitude);
+                            });
+                        })
+                        .fail(function () {
+                            alert("Une erreur s'est produite en chargeant les lieux");
+                        })
+                });
+
+                let nom = $('#sortie_form_nom');
+                let dateHeureDebut = $('#sortie_form_dateHeureDebut');
+                let duree = $('#sortie_form_duree');
+                let dateLimite = $('#sortie_form_dateLimiteInscription');
+                let participants = $('#sortie_form_nbInscriptionsMax');
+                let descr = $('#sortie_form_infosSortie');
+                let campus = $('#sortie_form_campus');
+                let lieu = $('#sortie_form_lieu');
+                $("#lieu_form_submit").click(function () {
+                    setSessionStorage();
+                });
+                ($("#sortie_form_publier")).click(function () {
+                    setSessionStorage();
+                });
+                ($("#sortie_form_enregistrer")).click(function () {
+                    setSessionStorage();
+                });
+                nom.val(sessionStorage.getItem('nom'));
+                dateHeureDebut.val(sessionStorage.getItem('dateHeureDebut'));
+                duree.val(sessionStorage.getItem('duree'));
+                dateLimite.val(sessionStorage.getItem('dateLimite'));
+                participants.val(sessionStorage.getItem('participants'));
+                descr.val(sessionStorage.getItem('descr'));
+                campus.val(sessionStorage.getItem('campus'));
+
+
+
+
+                // Si le formulaire de lieu a été soumis :
+                if ($('#test').val() == 1){
+                    let villeaffichee = $('#idville');
+                    let lieuID = $('#idLieuAffiche');
+                    let cpChoisi = $('#villecp');
+                    let rue = $('#rueLieuAffiche');
+                    let long = $('#longLieuAffiche');
+                    let lat = $('#latLieuAffiche');
+
+                    //Je récupère l'objet associé et j'affecte les mêmes valeurs au formSortie
+                    $('#sortie_form_ville').val(villeaffichee.val());
+                    $('#sortie_form_lieu').val(lieuID.val());
+                    $('#sortie_form_code_postal').val(cpChoisi.val());
+                    $('#sortie_form_rue').val(rue.val());
+                    $('#sortie_form_longitude').val(long.val());
+                    $('#sortie_form_latitude').val(lat.val());
+                } else {
+                    $('#sortie_form_ville').val(sessionStorage.getItem('ville'));
+                    $('#sortie_form_lieu').val(sessionStorage.getItem('lieu'));
+                }
+                sessionStorage.clear();
+
+                function setSessionStorage() {
+                  sessionStorage.setItem('nom', nom.val() );
+                    sessionStorage.setItem('dateHeureDebut', dateHeureDebut.val());
+                    sessionStorage.setItem('duree', duree.val());
+                    sessionStorage.setItem('dateLimite', dateLimite.val());
+                    sessionStorage.setItem('participants', participants.val());
+                    sessionStorage.setItem('descr', descr.val());
+                    sessionStorage.setItem('campus', campus.val());
+                    sessionStorage.setItem('lieu', lieu.val());
+                    sessionStorage.setItem('ville', $('#sortie_form_ville').val());
+                    sessionStorage.setItem('rue', $('#sortie_form_rue').val());
+                    sessionStorage.setItem('longitude', $('#sortie_form_longitude').val());
+                    sessionStorage.setItem('latitude', $('#sortie_form_latitude').val());
+                }
+
+});
+            </script>
+        {% endblock javascripts %}

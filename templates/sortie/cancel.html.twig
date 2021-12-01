@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block title %}Annuler une sortie{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    {% form_theme formAnnuler 'bootstrap_4_horizontal_layout.html.twig' %}
+    {{ form_start(formAnnuler) }}
+
+    <div class="mb-3">
+        {{ form_label(formAnnuler.nom) }}
+        {{ form_widget(formAnnuler.nom) }}
+        {{ form_errors(formAnnuler.nom) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(formAnnuler.dateHeureDebut) }}
+        {{ form_widget(formAnnuler.dateHeureDebut) }}
+        {{ form_errors(formAnnuler.dateHeureDebut) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(formAnnuler.campus) }}
+        {{ form_widget(formAnnuler.campus) }}
+        {{ form_errors(formAnnuler.campus) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(formAnnuler.lieu) }}
+        {{ form_widget(formAnnuler.lieu) }}
+        {{ form_errors(formAnnuler.lieu) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(formAnnuler.motifAnnulation) }}
+        {{ form_widget(formAnnuler.motifAnnulation) }}
+        {{ form_errors(formAnnuler.motifAnnulation) }}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2 offset-2 ">
+                {{ form_row(formAnnuler.submit) }}
+            </div>
+            <div class="col">
+                <a href="{{ url('default_home') }}"><button type="button" class="btn btn-outline-secondary">Annuler</button></a>
+            </div>
+        </div>
+    </div>
+    {{ form_end(formAnnuler) }}
+
+{% endblock %}
+

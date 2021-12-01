@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock title %}
+
+{% block body %}
+    <h2 class="text-center">Mon profil</h2>
+    {% form_theme userForm 'bootstrap_4_horizontal_layout.html.twig' %}
+    {{ form_start(userForm) }}
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-4 ">
+                <img src="{{ asset('uploads/user_image/' ~  app.user.imageFilename) }}">
+            </div>
+            <div class=" col order-1">
+
+                {{ form_row(userForm.pseudo, {'attr': {'class': 'mb-3'}}) }}
+                {{ form_row(userForm.prenom, {'attr': {'class': 'mb-3'}}) }}
+                {{ form_row(userForm.nom, {'attr': {'class': 'mb-3'}}) }}
+                {{ form_row(userForm.telephone, {'attr': {'class': 'mb-3'}}) }}
+                {{ form_row(userForm.email, {'attr': {'class': 'mb-3'}}) }}
+                {{ form_row(userForm.plainPassword.first, {'attr': {'class': 'mb-3'}}) }}
+                {{ form_row(userForm.plainPassword.second, {'attr': {'class': 'mb-3'}}) }}
+                {{ form_row(userForm.campus, {'attr': {'class': 'mb-3'}}) }}
+                {{ form_row(userForm.imageFilename, {'attr': {'class': 'mb-3'}}) }}
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-2 offset-2 ">
+                            {{ form_row(userForm.submit) }}
+                        </div>
+                        <div class="col">
+                            <a href="{{ url('default_home') }}" title="Sortir.com | Home">
+                                {{ form_widget(userForm.button) }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(userForm) }}
+        </div>
+    </div>
+{% endblock body %}

@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+{% block title %}Afficher une sortie{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="row ">
+        <div class="col">
+            <div>
+                <label class="text-secondary p-2">Nom :</label>
+                {{ sortie.nom }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2">Date et heure de la sortie :</label>
+                {{ sortie.dateHeureDebut |format_datetime() }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2">Date limite d'inscription :</label>
+                {{ sortie.dateLimiteInscription |format_datetime() }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2"> Nombres de places :</label>
+                {{ sortie.nbInscriptionsMax }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2"> Durée :</label>
+                {{ sortie.duree }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2">Description et infos :</label>
+                {{ sortie.infosSortie }}
+            </div>
+        </div>
+
+
+        <div class="col">
+            <div>
+                <label class="text-secondary p-2">Campus :</label>
+                {{ sortie.campus }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2">Lieu :</label>
+                {{ sortie.lieu }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2">Rue :</label>
+                {{ sortie.lieu.rue }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2"> Code Postal :</label>
+                {{ sortie.lieu.ville.codePostal }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2"> Latitude :</label>
+                {{ sortie.lieu.latitude }}
+            </div>
+
+            <div>
+                <label class="text-secondary p-2"> Longitude :</label>
+                {{ sortie.lieu.longitude }}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <br>
+        <h4> Listes des participants inscrits :</h4>
+        <br>
+
+        <div class="row justify-content-between">
+            {% for inscription in sortie.inscriptions %}
+                <div class=" col order-last card border-primary mb-3" style="max-width: 20rem;">
+                    <a style="text-decoration : none;"
+                       href="{{ path('afficherProfil', {'id': inscription.user.id()}) }}">
+                        <div class="card-header">{{ inscription.user.pseudo() }}</div>
+                    </a>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ inscription.user.nom() }}</h4>
+                        <p class="card-text text-center"><img src="{{ asset('uploads/user_image/' ~  inscription.user.imageFilename) }}"></p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+    </div>
+    <!-- Modal HTML -->
+    {% include 'modalBouton.html' %}
+
+    {% if sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id !=6 %}
+        {% if sortie.organisateur == app.user() %}
+            {% if( sortie.etat.id == 1 ) %}
+                <a href="{{ url('sortie_edit', {"id": sortie.id }) }}">
+                    <button type="button" class="btn btn-outline-secondary m-1"
+                            style="width: 110px">Modifier
+                    </button>
+                </a>
+                {#                                        <a href="{{ url('sortie_edit', {"id": sortie.id, "publier": true }) }}">#}
+                {#                                            <button type="button" class="btn btn-outline-secondary m-1"#}
+                {#                                                    style="width: 110px">#}
+                <a class="btn btn-outline-secondary m-1 btnPublish" href="#modalPublish"
+                   data-toggle="modal"
+                   data-href="{{ url('sortie_edit', {"id": sortie.id, "publier": true }) }}"
+                   data-id="{{ sortie.id }}" style="width: 110px">
+                    Publier
+                </a>
+                {#                                            </button>#}
+                {#                                        </a>#}
+            {% elseif sortie.etat.id ==2 or sortie.etat.id ==3 %}
+                <a href="{{ url('sortie_edit', {"id": sortie.id }) }}">
+                    <button type="button" class="btn btn-outline-secondary m-1"
+                            style="width: 110px">Modifier
+                    </button>
+                </a>
+                {#                                        <a href="{{ url('sortie_edit', {"id": sortie.id, "publier": true }) }}">#}
+                {#                                            <button type="button" class="btn btn-outline-secondary m-1"#}
+                {#                                                    style="width: 110px">#}
+                <a class="btn btn-outline-secondary m-1 btnPublish" href="#modalPublish"
+                   data-toggle="modal"
+                   data-href="{{ url('sortie_edit', {"id": sortie.id, "publier": true }) }}"
+                   data-id="{{ sortie.id }}" style="width: 110px">
+                    Annuler
+                </a>
+
+
+            {% else %}
+
+                {#                                        <a href="{{ url('sortie_cancel', {"id": sortie.id }) }}">#}
+                {#                                            <button type="button" class="btn btn-outline-secondary m-1"#}
+                {#                                                    style="width: 110px">#}
+                <a class="btn btn-outline-secondary m-1 btnCancel" href="#modalCancel"
+                   data-toggle="modal"
+                   data-href="{{ url('sortie_cancel', {"id": sortie.id, "annuler": true }) }}"
+                   data-id="{{ sortie.id }}" style="width: 110px">
+                    Annuler
+                </a>
+                <a href="{{ url('default_home') }}">
+                    <button type="button" class="btn btn-outline-secondary m-1"
+                            style="width: 110px">Retour
+                    </button>
+                </a>
+            {% endif %}
+        {% else %}
+
+            {% if(sortie.etat.id != 3) %}
+                {% set ok = 0 %}
+                {% for inscription in sortie.inscriptions %}
+                    {% if inscription.user == app.user() %}
+                        {% set ok = 1 %}
+                    {% endif %}
+                {% endfor %}
+                {% if  ok==0 %}
+                    <a class="btn btn-outline-secondary m-1 btnRegister" href="#modalInscrire"
+                       data-toggle="modal"
+                       data-href="{{ url('inscription_inscrire', {"id": sortie.id}) }}"
+                       data-id="{{ sortie.id }}" style="width: 110px">
+                        S'inscrire
+                    </a>
+                {% else %}
+                    <a class="btn btn-outline-secondary m-1 btnUnregister" href="#modalDesist"
+                       data-toggle="modal"
+                       data-href="{{ url('inscription_desinscrire', {"id": sortie.id}) }}"
+                       data-id="{{ sortie.id }}" style="width: 110px">
+                        Se désister
+                    </a>
+                {% endif %}
+            {% endif %}
+            <a href="{{ url('default_home') }}">
+                <button type="button" class="btn btn-outline-secondary m-1"
+                        style="width: 110px">Retour
+                </button>
+            </a>
+        {% endif %}
+    {% else %}
+        <a href="{{ url('default_home') }}">
+            <button type="button" class="btn btn-outline-secondary m-1"
+                    style="width: 110px">Retour
+            </button>
+        </a>
+    {% endif %}
+
+
+
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/boutons.js') }}">
+{% endblock %}

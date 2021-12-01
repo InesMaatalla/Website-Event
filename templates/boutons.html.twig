@@ -1,0 +1,91 @@
+{% if sortie.etat.id != 4 and sortie.etat.id != 5 and sortie.etat.id !=6 %}
+    {% if sortie.organisateur == app.user() %}
+        {% if( sortie.etat.id == 1 ) %}
+            <a href="{{ url('sortie_edit', {"id": sortie.id }) }}">
+                <button type="button" class="btn btn-outline-secondary m-1"
+                        style="width: 110px">Modifier
+                </button>
+            </a>
+            {#                                        <a href="{{ url('sortie_edit', {"id": sortie.id, "publier": true }) }}">#}
+            {#                                            <button type="button" class="btn btn-outline-secondary m-1"#}
+            {#                                                    style="width: 110px">#}
+            <a class="btn btn-outline-secondary m-1 btnPublish" href="#modalPublish"
+               data-toggle="modal"
+               data-href="{{ url('sortie_edit', {"id": sortie.id, "publier": true }) }}"
+               data-id="{{ sortie.id }}" style="width: 110px">
+                Publier
+            </a>
+            {#                                            </button>#}
+            {#                                        </a>#}
+        {% elseif sortie.etat.id ==2 or sortie.etat.id ==3 %}
+            <a href="{{ url('sortie_edit', {"id": sortie.id }) }}">
+                <button type="button" class="btn btn-outline-secondary m-1"
+                        style="width: 110px">Modifier
+                </button>
+            </a>
+            {#                                        <a href="{{ url('sortie_edit', {"id": sortie.id, "publier": true }) }}">#}
+            {#                                            <button type="button" class="btn btn-outline-secondary m-1"#}
+            {#                                                    style="width: 110px">#}
+            <a class="btn btn-outline-secondary m-1 btnCancel" href="#modalCancel"
+               data-toggle="modal"
+               data-href="{{ url('sortie_cancel', {"id": sortie.id, "publier": true }) }}"
+               data-id="{{ sortie.id }}" style="width: 110px">
+                Annuler
+            </a>
+
+
+        {% else %}
+            <a href="{{ url('sortie_afficherSortie', {"id": sortie.id }) }}">
+                <button type="button" class="btn btn-outline-secondary m-1"
+                        style="width: 110px">Afficher
+                </button>
+            </a>
+            {#                                        <a href="{{ url('sortie_cancel', {"id": sortie.id }) }}">#}
+            {#                                            <button type="button" class="btn btn-outline-secondary m-1"#}
+            {#                                                    style="width: 110px">#}
+            <a class="btn btn-outline-secondary m-1 btnCancel" href="#modalCancel"
+               data-toggle="modal"
+               data-href="{{ url('sortie_cancel', {"id": sortie.id, "annuler": true }) }}"
+               data-id="{{ sortie.id }}" style="width: 110px">
+                Annuler
+            </a>
+            {#                                            </button>#}
+            </a>
+        {% endif %}
+    {% else %}
+        <a href="{{ url('sortie_afficherSortie', {"id": sortie.id }) }}">
+            <button type="button" class="btn btn-outline-secondary m-1"
+                    style="width: 110px">Afficher
+            </button>
+        </a>
+        {% if(sortie.etat.id != 3) %}
+            {% set ok = 0 %}
+            {% for inscription in sortie.inscriptions %}
+                {% if inscription.user == app.user() %}
+                    {% set ok = 1 %}
+                {% endif %}
+            {% endfor %}
+            {% if  ok==0 %}
+                <a class="btn btn-outline-secondary m-1 btnRegister" href="#modalInscrire"
+                   data-toggle="modal"
+                   data-href="{{ url('inscription_inscrire', {"id": sortie.id}) }}"
+                   data-id="{{ sortie.id }}" style="width: 110px">
+                    S'inscrire
+                </a>
+            {% else %}
+                <a class="btn btn-outline-secondary m-1 btnUnregister" href="#modalDesist"
+                   data-toggle="modal"
+                   data-href="{{ url('inscription_desinscrire', {"id": sortie.id}) }}"
+                   data-id="{{ sortie.id }}" style="width: 110px">
+                    Se désister
+                </a>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% else %}
+    <a href="{{ url('sortie_afficherSortie', {"id": sortie.id }) }}">
+        <button type="button" class="btn btn-outline-secondary m-1" style="width: 110px">
+            Afficher
+        </button>
+    </a>
+{% endif %}

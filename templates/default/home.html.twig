@@ -1,0 +1,129 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} - Accueil{% endblock title %}
+
+{% block body %}
+    {{ parent() }}
+    <h1>Bienvenue  {% if app.user %}{{ app.user.pseudo|capitalize }}{% endif %} sur Sortir.com !</h1>
+
+    {% form_theme formSearch 'bootstrap_4_horizontal_layout.html.twig' %}
+    {{ form_start(formSearch) }}
+    <div class="container-xxl">
+        <div class="container ">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        {{ form_row(formSearch.campus) }}
+                    </div>
+                    <div class="mb-3 ">
+                        {{ form_row(formSearch.query) }}
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2 mb-3">
+                            {{ form_label(formSearch.dateDebut) }}
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            {{ form_widget(formSearch.dateDebut) }}
+                            {{ form_errors(formSearch.dateDebut) }}
+                        </div>
+                        <div class="col-sm-2 mb-3 text-center">
+                            {{ form_label(formSearch.dateFin) }}
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            {{ form_widget(formSearch.dateFin) }}
+                            {{ form_errors(formSearch.dateFin) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 ms-4">
+                    <div class="mb-3">
+                        {{ form_label(formSearch.isOrganisateur) }}
+                        {{ form_widget(formSearch.isOrganisateur) }}
+                        {{ form_errors(formSearch.isOrganisateur) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(formSearch.isInscrit) }}
+                        {{ form_widget(formSearch.isInscrit) }}
+                        {{ form_errors(formSearch.isInscrit) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(formSearch.isNotInscrit) }}
+                        {{ form_widget(formSearch.isNotInscrit) }}
+                        {{ form_errors(formSearch.isNotInscrit) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(formSearch.passee) }}
+                        {{ form_widget(formSearch.passee) }}
+                        {{ form_errors(formSearch.passee) }}
+                    </div>
+                </div>
+                <div class="col mb-3 btn btn-group-vertical">
+                    <div class="row mb-3">
+                        {{ form_row(formSearch.submit) }}
+                    </div>
+                    <div class="row mb-3">
+                        {{ form_row(formSearch.reset) }}
+                    </div>
+                </div>
+            </div>
+            {{ form_end(formSearch) }}
+
+        </div>
+        <div class="container">
+            <table id="dtDynamicVerticalScrollExample" class="table table-hover table-striped table-bordered table-sm ">
+                <thead>
+                <tr class="text-center table-dark">
+                    <th scope="col" class="th-sm">Nom de la Sortie</th>
+                    <th scope="col" class="th-sm">Date de la Sortie</th>
+                    <th scope="col" class="th-sm">Clôture</th>
+                    <th scope="col" class="th-sm">inscrits/places</th>
+                    <th scope="col" class="th-sm">Etat</th>
+                    <th scope="col" class="th-sm">Inscrit</th>
+                    <th scope="col" class="th-sm">Organisateur</th>
+                    <th scope="col" class="th-sm">Actions</th>
+                </tr>
+                </thead>
+                <tbody class="dataTables_scrollBody">
+                {% for sortie in sorties %}
+                    <tr class="text-center table-dark">
+                        <td>{{ sortie.nom }}</td>
+                        <td>{{ sortie.dateHeureDebut |format_datetime() }}</td>
+                        <td>{{ sortie.dateLimiteInscription |format_datetime() }}</td>
+                        <td>{{ sortie.inscriptions|length }}/{{ sortie.nbInscriptionsMax }}</td>
+                        <td>{{ sortie.etat }}</td>
+                        <td>{% for inscription in sortie.inscriptions %}
+                                {% if inscription.user == app.user() %}
+                                    X
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a style="text-decoration : none;"
+                               href="{{ url('afficherProfil', {"id": sortie.organisateur.id }) }}">{{ sortie.organisateur }}</a>
+                        </td>
+                        <td>
+                            {% include 'boutons.html.twig' %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="m-3">
+            <a href="{{ url('sortie_create') }}">
+                <button type="button" class="btn btn-outline-secondary m-1">Créer une sortie
+                </button>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Modal HTML -->
+    {% include 'modalBouton.html'  %}
+
+{% endblock body %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/boutons.js') }}" type="text/javascript" >
+{% endblock %}

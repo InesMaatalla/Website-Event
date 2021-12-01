@@ -1,0 +1,58 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} - Villes {% endblock title %}
+
+{% block body %}
+    <h1 style="text-align: center">Gérer les villes</h1>
+    <br>
+    <br>
+    <h4 class="container row-justify-content-center col-sm-8"><strong>Filtrer les sites</strong></h4>
+
+    <div class="container row-justify-content-center col-sm-8">
+        {{ form_start(formSearchVille) }}
+            <form class="d-flex">
+                <div class="form-control searchContent" type="text">
+                    {{ form_label(formSearchVille.query) }}
+                    {{ form_widget(formSearchVille.query) }}
+                    {{ form_widget(formSearchVille.submit) }}
+                </div>
+            </form>
+        {{ form_end(formSearchVille) }}
+    </div>
+
+    <div class="container row-justify-content-center col-sm-8">
+        {{ form_start(form) }}
+
+            <table id="dtDynamicVerticalScrollExample" class="table table-campus table-bordered table-sm">
+                <thead>
+                <tr class="table-light table-head text-center">
+                    <th scope="col">Villes</th>
+                    <th scope="col">Code postal</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for ville in cities %}
+                    <tr class="table-secondary text-center">
+                        <td class="col-4">{{ ville.nom }}</td>
+                        <td class="col-4">{{ ville.codePostal }}</td>
+                        <td class="col-4">
+                            <a href="{{ url('ville_edit', { id : ville.id}) }}">Modifier</a>
+                            -
+                            <a href="{{ url('ville_remove', { id : ville.id}) }}">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr class="table-secondary text-center">
+                    <td style="vertical-align: middle">{{ form_widget(form.nom) }}</td>
+                    <td style="vertical-align: middle">{{ form_widget(form.codePostal) }}</td>
+                    <td><input type="submit" value="Ajouter" class="btn btn-outline-secondary" ></td>
+                </tr>
+                </tbody>
+            </table>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock body %}
