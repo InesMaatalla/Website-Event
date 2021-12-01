@@ -1,3 +1,3 @@
 # Website-Event
  
-![website](https://github.com/InesMaatalla/ines-maatalla-portfolio/blob/master/src/images/website-event.png)
+![website](https://github.com/InesMaatalla/Website-Event/blob/main/website-event.png)
